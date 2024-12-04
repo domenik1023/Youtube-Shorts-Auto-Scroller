@@ -1,10 +1,14 @@
 // ==UserScript==
 // @name         YouTube Shorts Auto Scroll
-// @namespace    https://domenik1023.de/
-// @version      1.2
+// @namespace    domenik1023
+// @version      1.3
 // @description  Automatically scroll to the next YouTube Shorts video after it ends.
 // @author       ChatGPT, domenik1023
 // @match        https://www.youtube.com/shorts/*
+// @homepageURL  https://domenik1023.de
+// @supportURL   https://github.com/domenik1023/Youtube-Shorts-Auto-Scroller/issues
+// @updateURL    https://github.com/domenik1023/Youtube-Shorts-Auto-Scroller/raw/main/scroll.meta.js
+// @downloadURL  https://github.com/domenik1023/Youtube-Shorts-Auto-Scroller/raw/main/scroll.user.js
 // @grant        none
 // ==/UserScript==
 
