@@ -1,4 +1,4 @@
 // ==UserScript==
 // @name         YouTube Shorts Auto Scroll
-// @version      1.2
+// @version      1.3
 // ==/UserScript==
