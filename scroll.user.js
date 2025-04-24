@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Shorts Auto Scroll
 // @namespace    domenik1023
-// @version      1.3
+// @version      1.4
 // @description  Automatically scroll to the next YouTube Shorts video after it ends.
 // @author       ChatGPT, domenik1023
 // @match        https://www.youtube.com/shorts/*
