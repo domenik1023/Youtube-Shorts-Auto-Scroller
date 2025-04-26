@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Shorts Auto Scroll
 // @namespace    domenik1023
-// @version      1.4
+// @version      1.4.1
 // @description  Automatically scroll to the next YouTube Shorts video after it ends.
 // @author       ChatGPT, domenik1023
 // @match        https://www.youtube.com/shorts/*
@@ -12,7 +12,7 @@
 // @grant        none
 // ==/UserScript==
 
-(function () {
+(function() {
     'use strict';
 
     const debug = false; // Set to true to enable debug logging
@@ -63,39 +63,47 @@
 
     // Function to detect when the video ends and scroll to the next short
     function autoScrollNext() {
+        debugLog('Scroll_Dumbo: autoScrollNext function called');
         const video = document.querySelector('video');
-        if (!video) return;
+        if (video) {
+            debugLog('Scroll_Dumbo: Video element found');
+            removeLoop(video); // Remove loop attribute if present whenever video is found
+            startRemovingLoop(video); // Start monitoring loop attribute
+        }
+        if (!video) {
+            debugLog('Scroll_Dumbo: No video element found');
+            return;
+        }
 
-        removeLoop(video);
-        startRemovingLoop(video);
+        video.addEventListener('ended', () => {
+            removeLoop(video);
+            debugLog('Scroll_Dumbo: Video ended');
+            // Wait a bit before scrolling to simulate natural behavior
+            setTimeout(() => {
+                debugLog('Scroll_Dumbo: Attempting to scroll to the next Shorts video');
+                debugLog('Scroll_Dumbo: Pressing the arrow down key to move to the next video');
+                const arrowDownEvent = new KeyboardEvent('keydown', {
+                    key: 'ArrowDown',
+                    code: 'ArrowDown',
+                    keyCode: 40,
+                    which: 40,
+                    bubbles: true,
+                    cancelable: true
+                });
+                document.dispatchEvent(arrowDownEvent);
+                debugLog('Scroll_Dumbo: Finished scrolling to the next Shorts video');
+            }, 500);
+        });
 
-        const goNext = () => {
-            // Instant jump inside the Shorts scroller container
-            const scroller = video.closest('#shorts-container');
-            if (scroller) {
-                scroller.scrollTop += window.innerHeight;
-                scroller.dispatchEvent(new Event('scroll')); // Notify YouTube’s internal scroll listener
-            } else {
-                // Fallback: emulate Arrow-Down key as before
-                ['keydown', 'keyup'].forEach(type =>
-                    document.dispatchEvent(new KeyboardEvent(type, {
-                        key: 'ArrowDown',
-                        code: 'ArrowDown',
-                        keyCode: 40,
-                        which: 40,
-                        bubbles: true,
-                        cancelable: true
-                    }))
-                );
-            }
-        };
+        video.addEventListener('play', () => {
+            debugLog('Scroll_Dumbo: Video started playing');
+            removeLoop(video); // Remove loop attribute if present whenever video starts playing
+        });
 
-        // Fire once when the current video ends
-        video.addEventListener('ended', () => setTimeout(goNext, 50), { once: true });
-
-        // Keep wiping any loop attribute
-        video.addEventListener('play', () => removeLoop(video));
-        video.addEventListener('loadeddata', () => removeLoop(video));
+        video.addEventListener('loadeddata', () => {
+            debugLog('Scroll_Dumbo: Video data loaded');
+            removeLoop(video); // Remove loop attribute if present whenever video data is loaded
+        });
     }
 
     // Run the function when the page is loaded or when navigating between shorts
